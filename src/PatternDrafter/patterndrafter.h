@@ -3,8 +3,12 @@
 
 #include <cstring>
 
+#include <QDebug>
+
 #include <QMainWindow>
 #include <QToolButton>
+#include <QGraphicsScene>
+#include <QGraphicsPixmapItem>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class PatternDrafter; }
@@ -25,6 +29,7 @@ public slots:
 private:
     void updateText();
     void updatePixelButtons();
+    void updatePreview();
 
     void pixelButtonConnections(bool enabled);
 
@@ -39,5 +44,7 @@ private:
     QVector<QToolButton *> clrColButtons;
 
     uint8_t pattern[8];
+
+    QGraphicsScene *scene;
 };
 #endif // PATTERNDRAFTER_H

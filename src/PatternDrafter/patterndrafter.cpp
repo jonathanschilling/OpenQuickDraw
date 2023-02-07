@@ -135,6 +135,11 @@ PatternDrafter::PatternDrafter(QWidget *parent)
         connect(setColButtons[i], SIGNAL(clicked(bool)), this, SLOT(wildcardClicked()));
         connect(clrColButtons[i], SIGNAL(clicked(bool)), this, SLOT(wildcardClicked()));
     }
+
+    scene = new QGraphicsScene();
+    ui->graphicsView->setScene(scene);
+
+    updatePreview();
 }
 
 PatternDrafter::~PatternDrafter()
@@ -181,6 +186,7 @@ void PatternDrafter::pixelClicked(bool state) {
     }
 
     updateText();
+    updatePreview();
 }
 
 void PatternDrafter::wildcardClicked() {
@@ -222,7 +228,9 @@ void PatternDrafter::wildcardClicked() {
     }
 
     updatePixelButtons();
+
     updateText();
+    updatePreview();
 }
 
 void PatternDrafter::updateText() {
@@ -249,4 +257,31 @@ void PatternDrafter::updatePixelButtons() {
     }
 
     pixelButtonConnections(true);
+}
+
+void PatternDrafter::updatePreview() {
+
+    scene->clear();
+
+    QImage image(8, 8, QImage::Format_RGB32);
+
+    QRgb black = qRgb(0, 0, 0);
+    QRgb white = qRgb(255, 255, 255);
+
+    for (int row = 0; row < 8; ++row) {
+        for (int col = 0; col < 8; ++col) {
+            bool state = pattern[row] & (1 << (7 - col));
+            if (state) {
+                image.setPixel(col, row, black);
+            } else {
+                image.setPixel(col, row, white);
+            }
+        }
+    }
+
+    QPixmap pixmap = QPixmap::fromImage(image).scaled(64, 64);
+    scene->addPixmap(pixmap);
+    scene->addRect(pixmap.rect());
+
+    ui->graphicsView->show();
 }
