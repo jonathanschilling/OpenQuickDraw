@@ -136,8 +136,14 @@ PatternDrafter::PatternDrafter(QWidget *parent)
         connect(clrColButtons[i], SIGNAL(clicked(bool)), this, SLOT(wildcardClicked()));
     }
 
+    connect(ui->spinBox_pixelSpacing, SIGNAL(valueChanged(int)), this, SLOT(pixelSpacingChanged(int)));
+    connect(ui->spinBox_zoomFactor, SIGNAL(valueChanged(int)), this, SLOT(zoomFactorChanged(int)));
+
     scene = new QGraphicsScene();
     ui->graphicsView->setScene(scene);
+
+    pixelSpacing = ui->spinBox_pixelSpacing->value();
+    zoomFactor = ui->spinBox_zoomFactor->value();
 
     updatePreview();
 }
@@ -233,6 +239,18 @@ void PatternDrafter::wildcardClicked() {
     updatePreview();
 }
 
+void PatternDrafter::pixelSpacingChanged(int newPixelSpacing) {
+    this->pixelSpacing = newPixelSpacing;
+
+    updatePreview();
+}
+
+void PatternDrafter::zoomFactorChanged(int newZoomFactor) {
+    this->zoomFactor = newZoomFactor;
+
+    updatePreview();
+}
+
 void PatternDrafter::updateText() {
     int n = 255;
     char msg[n];
@@ -263,25 +281,41 @@ void PatternDrafter::updatePreview() {
 
     scene->clear();
 
-    QImage image(8, 8, QImage::Format_RGB32);
+    int num_x = 8;
+    int num_y = 8;
+
+    int width  = num_x * zoomFactor + (num_x - 1)*pixelSpacing;
+    int height = num_y * zoomFactor + (num_y - 1)*pixelSpacing;
+
+    QImage image(width, height, QImage::Format_RGB32);
 
     QRgb black = qRgb(0, 0, 0);
     QRgb white = qRgb(255, 255, 255);
+
+    image.fill(white);
 
     for (int row = 0; row < 8; ++row) {
         for (int col = 0; col < 8; ++col) {
             bool state = pattern[row] & (1 << (7 - col));
             if (state) {
-                image.setPixel(col, row, black);
-            } else {
-                image.setPixel(col, row, white);
+
+                int offset_x = col * (zoomFactor + pixelSpacing);
+                int offset_y = row * (zoomFactor + pixelSpacing);
+
+                for (int x = 0; x  < zoomFactor; ++x) {
+                    for (int y = 0; y < zoomFactor; ++y) {
+                        image.setPixel(offset_x + x, offset_y + y, black);
+                    }
+                }
+
             }
         }
     }
 
-    QPixmap pixmap = QPixmap::fromImage(image).scaled(64, 64);
+    QPixmap pixmap = QPixmap::fromImage(image);
     scene->addPixmap(pixmap);
     scene->addRect(pixmap.rect());
 
     ui->graphicsView->show();
 }
+

@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>532</width>
+    <width>643</width>
     <height>532</height>
    </rect>
   </property>
@@ -1495,9 +1495,64 @@
      <rect>
       <x>430</x>
       <y>10</y>
-      <width>91</width>
-      <height>91</height>
+      <width>201</width>
+      <height>181</height>
      </rect>
+    </property>
+   </widget>
+   <widget class="QSpinBox" name="spinBox_pixelSpacing">
+    <property name="geometry">
+     <rect>
+      <x>420</x>
+      <y>320</y>
+      <width>81</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="value">
+     <number>2</number>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>420</x>
+      <y>300</y>
+      <width>81</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>pixel spacing</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_2">
+    <property name="geometry">
+     <rect>
+      <x>420</x>
+      <y>360</y>
+      <width>81</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>zoom factor</string>
+    </property>
+   </widget>
+   <widget class="QSpinBox" name="spinBox_zoomFactor">
+    <property name="geometry">
+     <rect>
+      <x>420</x>
+      <y>380</y>
+      <width>81</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="minimum">
+     <number>1</number>
+    </property>
+    <property name="value">
+     <number>8</number>
     </property>
    </widget>
   </widget>
@@ -1506,8 +1561,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>532</width>
-     <height>30</height>
+     <width>643</width>
+     <height>20</height>
     </rect>
    </property>
   </widget>

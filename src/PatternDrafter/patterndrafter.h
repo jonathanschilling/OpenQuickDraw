@@ -25,6 +25,8 @@ public:
 public slots:
     void pixelClicked(bool state);
     void wildcardClicked();
+    void pixelSpacingChanged(int newPixelSpacing);
+    void zoomFactorChanged(int newZoomFactor);
 
 private:
     void updateText();
@@ -46,5 +48,7 @@ private:
     uint8_t pattern[8];
 
     QGraphicsScene *scene;
+    int pixelSpacing;
+    int zoomFactor;
 };
 #endif // PATTERNDRAFTER_H
