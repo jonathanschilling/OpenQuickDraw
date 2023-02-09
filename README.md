@@ -4,7 +4,7 @@ An open-source implementation of Apple QuickDraw from the early Macintosh comput
 
 ## PatternDrafter
 
-For now, a utility program called [`PatternDrafter`](src/PatternDrafter)
+For now, a utility program called [`PatternDrafter`](src/PatternDrafter/patterndrafter.cpp)
 is provided in this repository.
 
 It can be used to turn an idea for a 8x8 black-and-white pattern
