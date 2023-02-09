@@ -135,17 +135,25 @@ PatternDrafter::PatternDrafter(QWidget *parent)
         connect(setColButtons[i], SIGNAL(clicked(bool)), this, SLOT(wildcardClicked()));
         connect(clrColButtons[i], SIGNAL(clicked(bool)), this, SLOT(wildcardClicked()));
     }
-
-    connect(ui->spinBox_pixelSpacing, SIGNAL(valueChanged(int)), this, SLOT(pixelSpacingChanged(int)));
-    connect(ui->spinBox_zoomFactor, SIGNAL(valueChanged(int)), this, SLOT(zoomFactorChanged(int)));
     connect(ui->toolButton_randomize, SIGNAL(clicked(bool)), this, SLOT(randomizeClicked()));
 
-    scene = new QGraphicsScene();
-    ui->graphicsView->setScene(scene);
+    connect(ui->spinBox_zoomFactor_pattern, SIGNAL(valueChanged(int)), this, SLOT(zoomFactorPatternChanged(int)));
+    connect(ui->spinBox_pixelSpacing_pattern, SIGNAL(valueChanged(int)), this, SLOT(pixelSpacingPatternChanged(int)));
 
-    pixelSpacing = ui->spinBox_pixelSpacing->value();
-    zoomFactor = ui->spinBox_zoomFactor->value();
+    connect(ui->spinBox_zoomFactor_preview, SIGNAL(valueChanged(int)), this, SLOT(zoomFactorPreviewChanged(int)));
 
+    scene_pattern = new QGraphicsScene();
+    ui->graphicsView_pattern->setScene(scene_pattern);
+
+    scene_preview = new QGraphicsScene();
+    ui->graphicsView_preview->setScene(scene_preview);
+
+    zoomFactor_pattern = ui->spinBox_zoomFactor_pattern->value();
+    pixelSpacing_pattern = ui->spinBox_pixelSpacing_pattern->value();
+
+    zoomFactor_preview = ui->spinBox_zoomFactor_preview->value();
+
+    updatePattern();
     updatePreview();
 }
 
@@ -154,8 +162,8 @@ PatternDrafter::~PatternDrafter()
     delete ui;
 }
 
-void PatternDrafter::pixelButtonConnections(bool enabled) {
-    if (enabled) {
+void PatternDrafter::pixelButtonConnections(bool enable) {
+    if (enable) {
         for (int i = 0; i < pixelButtons.size(); ++i) {
             if (pixelButtons[i]) {
                 connect(pixelButtons[i], SIGNAL(clicked(bool)), this, SLOT(pixelClicked(bool)));
@@ -179,7 +187,7 @@ void PatternDrafter::pixelClicked(bool state) {
             int col = i % 10;
 
             if (state) {
-                pattern[row] |= (1 << (7 - col));
+                pattern[row] |=  (1 << (7 - col));
             } else {
                 pattern[row] &= ~(1 << (7 - col));
             }
@@ -193,6 +201,7 @@ void PatternDrafter::pixelClicked(bool state) {
     }
 
     updateText();
+    updatePattern();
     updatePreview();
 }
 
@@ -237,17 +246,24 @@ void PatternDrafter::wildcardClicked() {
     updatePixelButtons();
 
     updateText();
+    updatePattern();
     updatePreview();
 }
 
-void PatternDrafter::pixelSpacingChanged(int newPixelSpacing) {
-    this->pixelSpacing = newPixelSpacing;
+void PatternDrafter::pixelSpacingPatternChanged(int newPixelSpacing) {
+    this->pixelSpacing_pattern = newPixelSpacing;
 
-    updatePreview();
+    updatePattern();
 }
 
-void PatternDrafter::zoomFactorChanged(int newZoomFactor) {
-    this->zoomFactor = newZoomFactor;
+void PatternDrafter::zoomFactorPatternChanged(int newZoomFactor) {
+    this->zoomFactor_pattern = newZoomFactor;
+
+    updatePattern();
+}
+
+void PatternDrafter::zoomFactorPreviewChanged(int newZoomFactor) {
+    this->zoomFactor_preview = newZoomFactor;
 
     updatePreview();
 }
@@ -261,6 +277,7 @@ void PatternDrafter::randomizeClicked() {
     updatePixelButtons();
 
     updateText();
+    updatePattern();
     updatePreview();
 }
 
@@ -290,15 +307,15 @@ void PatternDrafter::updatePixelButtons() {
     pixelButtonConnections(true);
 }
 
-void PatternDrafter::updatePreview() {
+void PatternDrafter::updatePattern() {
 
-    scene->clear();
+    scene_pattern->clear();
 
-    int num_x = 8;
-    int num_y = 8;
+    int pattern_x = 8;
+    int pattern_y = 8;
 
-    int width  = num_x * zoomFactor + (num_x - 1)*pixelSpacing;
-    int height = num_y * zoomFactor + (num_y - 1)*pixelSpacing;
+    int width  = pattern_x * zoomFactor_pattern + (pattern_x - 1)*pixelSpacing_pattern;
+    int height = pattern_y * zoomFactor_pattern + (pattern_y - 1)*pixelSpacing_pattern;
 
     QImage image(width, height, QImage::Format_RGB32);
 
@@ -312,11 +329,11 @@ void PatternDrafter::updatePreview() {
             bool state = pattern[row] & (1 << (7 - col));
             if (state) {
 
-                int offset_x = col * (zoomFactor + pixelSpacing);
-                int offset_y = row * (zoomFactor + pixelSpacing);
+                int offset_x = col * (zoomFactor_pattern + pixelSpacing_pattern);
+                int offset_y = row * (zoomFactor_pattern + pixelSpacing_pattern);
 
-                for (int x = 0; x  < zoomFactor; ++x) {
-                    for (int y = 0; y < zoomFactor; ++y) {
+                for (int x = 0; x  < zoomFactor_pattern; ++x) {
+                    for (int y = 0; y < zoomFactor_pattern; ++y) {
                         image.setPixel(offset_x + x, offset_y + y, black);
                     }
                 }
@@ -326,9 +343,62 @@ void PatternDrafter::updatePreview() {
     }
 
     QPixmap pixmap = QPixmap::fromImage(image);
-    scene->addPixmap(pixmap);
-    scene->addRect(pixmap.rect());
+    scene_pattern->addPixmap(pixmap);
 
-    ui->graphicsView->show();
+    QRgb red = qRgb(255, 0, 0);
+    scene_pattern->addRect(pixmap.rect(), QPen(red));
+
+    ui->graphicsView_pattern->show();
 }
 
+void PatternDrafter::updatePreview() {
+
+    scene_preview->clear();
+
+    int pattern_x = 8;
+    int pattern_y = 8;
+
+    int num_copies_x = 10;
+    int num_copies_y = 6;
+
+    int width  = num_copies_x * pattern_x * zoomFactor_preview;
+    int height = num_copies_y * pattern_y * zoomFactor_preview;
+
+    QImage image(width, height, QImage::Format_RGB32);
+
+    QRgb black = qRgb(0, 0, 0);
+    QRgb white = qRgb(255, 255, 255);
+
+    image.fill(white);
+
+    // draw copies of pattern
+    for (int copy_x = 0; copy_x < num_copies_x; ++copy_x) {
+        for (int copy_y = 0; copy_y < num_copies_y; ++copy_y) {
+
+            int copy_offset_x = copy_x * pattern_x * zoomFactor_preview;
+            int copy_offset_y = copy_y * pattern_y * zoomFactor_preview;
+
+            // draw single zoomed pattern
+            for (int row = 0; row < 8; ++row) {
+                for (int col = 0; col < 8; ++col) {
+                    bool state = pattern[row] & (1 << (7 - col));
+                    if (state) {
+                        int offset_x = copy_offset_x + col * zoomFactor_preview;
+                        int offset_y = copy_offset_y + row * zoomFactor_preview;
+                        for (int x = 0; x  < zoomFactor_preview; ++x) {
+                            for (int y = 0; y < zoomFactor_preview; ++y) {
+                                image.setPixel(offset_x + x, offset_y + y, black);
+                            }
+                        }
+                    }
+                }
+            }
+
+        }
+    }
+
+    QPixmap pixmap = QPixmap::fromImage(image);
+    scene_preview->addPixmap(pixmap);
+
+    ui->graphicsView_preview->show();
+}

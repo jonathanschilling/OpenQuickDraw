@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>642</width>
+    <width>689</width>
     <height>521</height>
    </rect>
   </property>
@@ -1043,7 +1043,7 @@
      <rect>
       <x>10</x>
       <y>430</y>
-      <width>511</width>
+      <width>621</width>
       <height>41</height>
      </rect>
     </property>
@@ -1490,7 +1490,7 @@
      <string>clr all</string>
     </property>
    </widget>
-   <widget class="QGraphicsView" name="graphicsView">
+   <widget class="QGraphicsView" name="graphicsView_pattern">
     <property name="geometry">
      <rect>
       <x>430</x>
@@ -1500,12 +1500,12 @@
      </rect>
     </property>
    </widget>
-   <widget class="QSpinBox" name="spinBox_pixelSpacing">
+   <widget class="QSpinBox" name="spinBox_pixelSpacing_pattern">
     <property name="geometry">
      <rect>
-      <x>540</x>
-      <y>380</y>
-      <width>81</width>
+      <x>640</x>
+      <y>90</y>
+      <width>41</width>
       <height>31</height>
      </rect>
     </property>
@@ -1513,38 +1513,38 @@
      <number>2</number>
     </property>
    </widget>
-   <widget class="QLabel" name="label_pixelSpacing">
+   <widget class="QLabel" name="label_pixelSpacing_pattern">
     <property name="geometry">
      <rect>
-      <x>540</x>
-      <y>360</y>
-      <width>81</width>
+      <x>640</x>
+      <y>70</y>
+      <width>41</width>
       <height>16</height>
      </rect>
     </property>
     <property name="text">
-     <string>pixel spacing</string>
+     <string>space</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_zoomFactor">
+   <widget class="QLabel" name="label_zoomFactor_pattern">
     <property name="geometry">
      <rect>
-      <x>540</x>
-      <y>420</y>
-      <width>81</width>
+      <x>640</x>
+      <y>10</y>
+      <width>31</width>
       <height>16</height>
      </rect>
     </property>
     <property name="text">
-     <string>zoom factor</string>
+     <string>zoom</string>
     </property>
    </widget>
-   <widget class="QSpinBox" name="spinBox_zoomFactor">
+   <widget class="QSpinBox" name="spinBox_zoomFactor_pattern">
     <property name="geometry">
      <rect>
-      <x>540</x>
-      <y>440</y>
-      <width>81</width>
+      <x>640</x>
+      <y>30</y>
+      <width>41</width>
       <height>31</height>
      </rect>
     </property>
@@ -1559,16 +1559,16 @@
     <property name="geometry">
      <rect>
       <x>430</x>
-      <y>380</y>
-      <width>91</width>
-      <height>31</height>
+      <y>350</y>
+      <width>201</width>
+      <height>61</height>
      </rect>
     </property>
     <property name="text">
      <string>Randomize</string>
     </property>
    </widget>
-   <widget class="QGraphicsView" name="graphicsView_pattern">
+   <widget class="QGraphicsView" name="graphicsView_preview">
     <property name="geometry">
      <rect>
       <x>430</x>
@@ -1578,13 +1578,42 @@
      </rect>
     </property>
    </widget>
+   <widget class="QSpinBox" name="spinBox_zoomFactor_preview">
+    <property name="geometry">
+     <rect>
+      <x>640</x>
+      <y>220</y>
+      <width>41</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="minimum">
+     <number>1</number>
+    </property>
+    <property name="value">
+     <number>2</number>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_zoomFactor_preview">
+    <property name="geometry">
+     <rect>
+      <x>640</x>
+      <y>200</y>
+      <width>31</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>zoom</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>642</width>
+     <width>689</width>
      <height>20</height>
     </rect>
    </property>

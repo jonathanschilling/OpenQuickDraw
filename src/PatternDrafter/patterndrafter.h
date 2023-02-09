@@ -25,16 +25,20 @@ public:
 public slots:
     void pixelClicked(bool state);
     void wildcardClicked();
-    void pixelSpacingChanged(int newPixelSpacing);
-    void zoomFactorChanged(int newZoomFactor);
     void randomizeClicked();
+
+    void zoomFactorPatternChanged(int newZoomFactor);
+    void pixelSpacingPatternChanged(int newPixelSpacing);
+
+    void zoomFactorPreviewChanged(int newZoomFactor);
 
 private:
     void updateText();
     void updatePixelButtons();
+    void updatePattern();
     void updatePreview();
 
-    void pixelButtonConnections(bool enabled);
+    void pixelButtonConnections(bool enable);
 
     Ui::PatternDrafter *ui;
 
@@ -48,8 +52,12 @@ private:
 
     uint8_t pattern[8];
 
-    QGraphicsScene *scene;
-    int pixelSpacing;
-    int zoomFactor;
+    QGraphicsScene *scene_pattern;
+    int zoomFactor_pattern;
+    int pixelSpacing_pattern;
+
+    QGraphicsScene *scene_preview;
+    int zoomFactor_preview;
+
 };
 #endif // PATTERNDRAFTER_H
