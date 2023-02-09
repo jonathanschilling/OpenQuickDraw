@@ -138,6 +138,7 @@ PatternDrafter::PatternDrafter(QWidget *parent)
 
     connect(ui->spinBox_pixelSpacing, SIGNAL(valueChanged(int)), this, SLOT(pixelSpacingChanged(int)));
     connect(ui->spinBox_zoomFactor, SIGNAL(valueChanged(int)), this, SLOT(zoomFactorChanged(int)));
+    connect(ui->toolButton_randomize, SIGNAL(clicked(bool)), this, SLOT(randomizeClicked()));
 
     scene = new QGraphicsScene();
     ui->graphicsView->setScene(scene);
@@ -248,6 +249,18 @@ void PatternDrafter::pixelSpacingChanged(int newPixelSpacing) {
 void PatternDrafter::zoomFactorChanged(int newZoomFactor) {
     this->zoomFactor = newZoomFactor;
 
+    updatePreview();
+}
+
+void PatternDrafter::randomizeClicked() {
+
+    for (int i = 0; i < 8; ++i) {
+        pattern[i] = rand()/((RAND_MAX + 1u)/256);
+    }
+
+    updatePixelButtons();
+
+    updateText();
     updatePreview();
 }
 

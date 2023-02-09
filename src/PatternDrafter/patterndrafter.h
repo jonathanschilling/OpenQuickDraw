@@ -27,6 +27,7 @@ public slots:
     void wildcardClicked();
     void pixelSpacingChanged(int newPixelSpacing);
     void zoomFactorChanged(int newZoomFactor);
+    void randomizeClicked();
 
 private:
     void updateText();
