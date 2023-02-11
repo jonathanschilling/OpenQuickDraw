@@ -1,3 +1,15 @@
+/**
+ * TODO:
+ * - invert button
+ * - dynamically change pattern size (not fixed 8x8)
+ * - allow more than 1 byte per row; padding at end of row
+ * - dynamic button creation/removal and setup of connections
+ * - save/load pattern: bin, code (parse C array)
+ * - back-annotation from text field (requires parsing of C array declaration)
+ * - dynamic layout: buttons fixed size, no space between buttons, scenes auto-resizing
+ * - auto-center scenes in GraphicsView
+ */
+
 #include "patterndrafter.h"
 #include "ui_patterndrafter.h"
 
