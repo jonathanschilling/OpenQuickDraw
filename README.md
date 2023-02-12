@@ -11,5 +11,5 @@ into a one-byte-per-row binary representation.
 
 Here is how the GUI looks like:
 
-![PatternDrafter demo](src/PatternDrafter/PatternDrafter_demo.png)
+![PatternDrafter demo](PatternDrafter/PatternDrafter_demo.png)
 
